@@ -1,0 +1,345 @@
+mysql> create database company_nitin;
+mysql> use company_nitin;
+mysql> create table employee(ssn int primary key, name varchar(20), address varchar(20), sex varchar(20), salary int, superssn int references employee(ssn) on delete cascade);
+mysql> create table department(dno int primary key, dname varchar(20),mgrssn int references employee(ssn) on delete cascade, mgrstartdate date);
+mysql> alter table employee add dno int references department(dno) on delete cascade;
+mysql> create table dlocation(dno int references department(dno), dloc varchar(20));
+mysql> create table project(pno int primary key , pname varchar(20), plocation varchar(20), dno int references department(dno));
+mysql> create table works_on(ssn int references employee(ssn) on delete cascade, pno int references project(pno) on delete cascade,hours int);
+
+mysql> desc employee;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| ssn      | int         | NO   | PRI | NULL    |       |
+| name     | varchar(20) | YES  |     | NULL    |       |
+| address  | varchar(20) | YES  |     | NULL    |       |
+| sex      | varchar(20) | YES  |     | NULL    |       |
+| salary   | int         | YES  |     | NULL    |       |
+| superssn | int         | YES  | MUL | NULL    |       |
+| dno      | int         | YES  | MUL | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+
+
+mysql> desc department;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| dno          | int         | NO   | PRI | NULL    |       |
+| dname        | varchar(20) | YES  |     | NULL    |       |
+| mgrssn       | int         | YES  | MUL | NULL    |       |
+| mgrstartdate | date        | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+
+
+mysql> desc dlocation;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| dno   | int         | YES  | MUL | NULL    |       |
+| dloc  | varchar(20) | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+
+mysql> desc project;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| pno       | int         | NO   | PRI | NULL    |       |
+| pname     | varchar(20) | YES  |     | NULL    |       |
+| plocation | varchar(20) | YES  |     | NULL    |       |
+| dno       | int         | YES  | MUL | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+
+
+mysql> desc works_on;
++-------+------+------+-----+---------+-------+
+| Field | Type | Null | Key | Default | Extra |
++-------+------+------+-----+---------+-------+
+| ssn   | int  | YES  | MUL | NULL    |       |
+| pno   | int  | YES  | MUL | NULL    |       |
+| hours | int  | YES  |     | NULL    |       |
++-------+------+------+-----+---------+-------+
+
+
+
+mysql> insert into employee(ssn, name, address, sex, salary, superssn, dno)values(101,'Akash','Kodagu','Male',15000,null,null);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into employee(ssn, name, address, sex, salary, superssn, dno)values(102,'Hari','Banglore','Male',18000,null,null);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into employee(ssn, name, address, sex, salary, superssn, dno)values(103,'Nitin','Mysore','Male',20000,null,null);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into employee(ssn, name, address, sex, salary, superssn, dno)values(104,'Mayur','Mandya','Male',25000,null,null);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into employee(ssn, name, address, sex, salary, superssn, dno)values(105,'Atharv','Manglore','Male',21000,null,null);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into department(dno,dname,mgrssn,mgrstartdate)values(1,'CS',101,'2024/02/12');
+Query OK, 1 row affected, 1 warning (0.02 sec)
+
+mysql> insert into department(dno,dname,mgrssn,mgrstartdate)values(2,'IS',102,'2024/04/02');
+Query OK, 1 row affected, 1 warning (0.01 sec)
+
+mysql> insert into department(dno,dname,mgrssn,mgrstartdate)values(3,'AI',103,'2024/05/22');
+Query OK, 1 row affected, 1 warning (0.01 sec)
+
+mysql> insert into department(dno,dname,mgrssn,mgrstartdate)values(4,'ML',104,'2024/10/20');
+Query OK, 1 row affected, 1 warning (0.00 sec)
+
+mysql> insert into department(dno,dname,mgrssn,mgrstartdate)values(5,'EC',105,'2025/01/15');
+Query OK, 1 row affected, 1 warning (0.01 sec)
+
+
+mysql> insert into dlocation(dno,dloc)values(1,'JP nagar');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into dlocation(dno,dloc)values(2,'Srirampura');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into dlocation(dno,dloc)values(3,'Electronic city');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into dlocation(dno,dloc)values(4,'White field');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into dlocation(dno,dloc)values(5,'Tech park');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into project(pno,pname,plocation,dno)values(10,'P1','Mysore',1);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into project(pno,pname,plocation,dno)values(11,'P2','Mandya',2);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into project(pno,pname,plocation,dno)values(12,'P3','Banglore',3);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into project(pno,pname,plocation,dno)values(13,'P4','Chennai',4);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into project(pno,pname,plocation,dno)values(14,'P5','Hyderabad',5);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into works_on(ssn,pno,hours)values(101,10,5);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into works_on(ssn,pno,hours)values(102,11,7);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into works_on(ssn,pno,hours)values(103,12,10);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into works_on(ssn,pno,hours)values(104,13,15);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into works_on(ssn,pno,hours)values(105,14,5);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select*from employee;
++-----+--------+----------+------+--------+----------+------+
+| ssn | name   | address  | sex  | salary | superssn | dno  |
++-----+--------+----------+------+--------+----------+------+
+| 101 | Akash  | Kodagu   | Male |  15000 |     NULL | NULL |
+| 102 | Hari   | Banglore | Male |  18000 |     NULL | NULL |
+| 103 | Nitin  | Mysore   | Male |  20000 |     NULL | NULL |
+| 104 | Mayur  | Mandya   | Male |  25000 |     NULL | NULL |
+| 105 | Atharv | Manglore | Male |  21000 |     NULL | NULL |
++-----+--------+----------+------+--------+----------+------+
+5 rows in set (0.00 sec)
+
+mysql> select*from department;
++-----+-------+--------+--------------+
+| dno | dname | mgrssn | mgrstartdate |
++-----+-------+--------+--------------+
+|   1 | CS    |    101 | 2024-02-12   |
+|   2 | IS    |    102 | 2024-04-02   |
+|   3 | AI    |    103 | 2024-05-22   |
+|   4 | ML    |    104 | 2024-10-20   |
+|   5 | EC    |    105 | 2025-01-15   |
++-----+-------+--------+--------------+
+5 rows in set (0.00 sec)
+
+mysql> select*from dlocation;
++------+-----------------+
+| dno  | dloc            |
++------+-----------------+
+|    1 | JP nagar        |
+|    2 | Srirampura      |
+|    3 | Electronic city |
+|    4 | White field     |
+|    5 | Tech park       |
++------+-----------------+
+5 rows in set (0.00 sec)
+
+mysql> select*from project;
++-----+-------+-----------+------+
+| pno | pname | plocation | dno  |
++-----+-------+-----------+------+
+|  10 | P1    | Mysore    |    1 |
+|  11 | P2    | Mandya    |    2 |
+|  12 | P3    | Banglore  |    3 |
+|  13 | P4    | Chennai   |    4 |
+|  14 | P5    | Hyderabad |    5 |
++-----+-------+-----------+------+
+5 rows in set (0.00 sec)
+
+mysql> select*from works_on;
++------+------+-------+
+| ssn  | pno  | hours |
++------+------+-------+
+|  101 |   10 |     5 |
+|  102 |   11 |     7 |
+|  103 |   12 |    10 |
+|  104 |   13 |    15 |
+|  105 |   14 |     5 |
++------+------+-------+
+5 rows in set (0.00 sec)
+
+mysql> update employee set superssn=101, dno=1 where ssn=101;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update employee set superssn=102, dno=2 where ssn=102;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update employee set superssn=103, dno=3 where ssn=103;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update employee set superssn=104, dno=4 where ssn=104;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update employee set superssn=105, dno=5 where ssn=105;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select*from employee;
++-----+--------+----------+------+--------+----------+------+
+| ssn | name   | address  | sex  | salary | superssn | dno  |
++-----+--------+----------+------+--------+----------+------+
+| 101 | Akash  | Kodagu   | Male |  15000 |      101 |    1 |
+| 102 | Hari   | Banglore | Male |  18000 |      102 |    2 |
+| 103 | Nitin  | Mysore   | Male |  20000 |      103 |    3 |
+| 104 | Mayur  | Mandya   | Male |  25000 |      104 |    4 |
+| 105 | Atharv | Manglore | Male |  21000 |      105 |    5 |
++-----+--------+----------+------+--------+----------+------+
+5 rows in set (0.00 sec)
+
+
+//query 1
+
+mysql> select p.pno from project p join department d on d.dno=p.dno join employee e on e.ssn=d.mgrssn where e.name='Akash' union select w.pno from works_on w join employee e
+on e.ssn=w.ssn where e.name='Akash';
++------+
+| pno  |
++------+
+|   10 |
++------+
+
+//query 2
+
+mysql> select e.name,1.1*salary as Updated_salary from employee e join works_on w on e.ssn=w.ssn join project p on p.pno=w.pno where pname='P1';
++-------+----------------+
+| name  | Updated_salary |
++-------+----------------+
+| Akash |        16500.0 |
++-------+----------------+
+
+mysql> select*from employee;
++-----+--------+----------+------+--------+----------+------+
+| ssn | name   | address  | sex  | salary | superssn | dno  |
++-----+--------+----------+------+--------+----------+------+
+| 101 | Akash  | Kodagu   | Male |  15000 |      101 |    1 |
+| 102 | Hari   | Banglore | Male |  18000 |      102 |    2 |
+| 103 | Nitin  | Mysore   | Male |  20000 |      103 |    3 |
+| 104 | Mayur  | Mandya   | Male |  25000 |      104 |    4 |
+| 105 | Atharv | Manglore | Male |  21000 |      105 |    5 |
++-----+--------+----------+------+--------+----------+------+
+
+//query 3
+
+mysql> select sum(salary) as sum_of_salaries, max(salary) as maximum_salary, min(salary) as minimum_salary, avg(salary) as average_salary from department d  join employee e on e.dno=d.dno where dname='CS';
++-----------------+----------------+----------------+----------------+
+| sum_of_salaries | maximum_salary | minimum_salary | average_salary |
++-----------------+----------------+----------------+----------------+
+|           15000 |          15000 |          15000 |     15000.0000 |
++-----------------+----------------+----------------+----------------+
+
+//query 4
+
+mysql> select  e.name from employee e where not exists(select pno from project where dno=5 and pno not in(select pno from works_on where e.ssn=ssn));
++--------+
+| name   |
++--------+
+| Atharv |
++--------+
+
+//query 5
+
+Query 1:
+
+mysql> select p.pno from project p join department d on d.dno=p.dno join employee e on e.ssn=d.mgrssn where e.name='John Scott' union select w.pno from works_on w join employee e on e.ssn=w.ssn where e.name='John Scott';
++------+
+| pno  |
++------+
+|  101 |
++------+
+1 row in set (0.01 sec)
+
+Query 2:
+
+mysql> select * from employee;
++-----------+--------------+---------------+------+--------+-----------+------+
+| ssn       | name         | address       | sex  | salary | superssn  | dno  |
++-----------+--------------+---------------+------+--------+-----------+------+
+| 112233445 | Mike Johnson | 789 Pine Rd.  | M    |  45000 | 123456789 |    1 |
+| 123456789 | John Scott   | 123 Elm St.   | M    |  50000 | 987654321 |    1 |
+| 556677889 | Emily Davis  | 234 Maple St. | F    |  70000 | 987654321 |    3 |
+| 667788990 | Daniel Brown | 345 Birch Rd. | M    |  55000 | 987654321 |    2 |
+| 987654321 | Sarah Smith  | 456 Oak Ave.  | F    |  60000 | 123456789 |    2 |
++-----------+--------------+---------------+------+--------+-----------+------+
+5 rows in set (0.00 sec)
+
+mysql> select 1.1*salary from employee e join works_on w on e.ssn=w.ssn join project p on p.pno=w.pno where pname='IoT';
+
++------------+
+| 1.1*salary |
++------------+
+|    66000.0 |
++------------+
+1 row in set (0.01 sec)
+
+Query 3:
+
+mysql> select sum(salary) as sum_salary,max(salary),min(salary),avg(salary) from department d join employee e on e.dno=d.dno where dname ='HR';
++------------+-------------+-------------+-------------+
+| sum_salary | max(salary) | min(salary) | avg(salary) |
++------------+-------------+-------------+-------------+
+|      95000 |       50000 |       45000 |  47500.0000 |
++------------+-------------+-------------+-------------+
+1 row in set (0.00 sec)
+
+Query 4:
+
+mysql> select  e.name from employee e where not exists(select pno from project where dno=5 and pno not in(select pno from works_on where e.ssn=ssn));
++--------------+
+| name         |
++--------------+
+| Daniel Brown |
++--------------+
+1 row in set (0.00 sec)
+
+Query 5:
+
+mysql> select e.dno,count(*) as employee_count from employee e,department d where e.dno=d.dno and salary>6000 and e.dno in (select dno from employee group by dno having count(*)>5)group by e.dno;
++------+----------------+
+| dno  | employee_count |
++------+----------------+
+|    2 |              6 |
++------+----------------+
+1 row in set (0.00 sec)
